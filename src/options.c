@@ -27,6 +27,10 @@ Options options = {
   .overlay_width = 340,
   .overlay_height = 120,
 
+  // distance from the screen edges (overlay is bottom-right anchored)
+  .overlay_offset_bottom = 0,
+  .overlay_offset_right = 0,
+
   // default color is light grey, which has enough contrast to be noticed
   // on both light and dark background.
   .text_color = {.r=0.7686275, .g=0.7686275, .b=0.7686275, .a=0.4},
@@ -69,6 +73,8 @@ void parse_options(int argc, char *const argv[]) {
     // size and position
     {"overlay-width",       required_argument, NULL, 'x'},
     {"overlay-height",      required_argument, NULL, 'y'},
+    {"overlay-offset-bottom", required_argument, NULL, 1000},
+    {"overlay-offset-right",  required_argument, NULL, 1001},
     {"scale",               required_argument, NULL, 's'},
     // other
     {"bypass-compositor",   no_argument,       NULL, 'w'},
@@ -117,6 +123,8 @@ void parse_options(int argc, char *const argv[]) {
       // size and position
       case 'x': options.overlay_width = atoi(optarg); break;
       case 'y': options.overlay_height = atoi(optarg); break;
+      case 1000: options.overlay_offset_bottom = atoi(optarg); break;
+      case 1001: options.overlay_offset_right = atoi(optarg); break;
       // other
       case 'w': options.bypass_compositor = true; break;
       case 'd': options.daemonize = true; break;
@@ -205,6 +213,8 @@ void print_help(const char *const file_name) {
   HELP("-x, --overlay-width width \tSet overlay width  before scaling (integer)");
   HELP("-y, --overlay-height height \tSet overlay height before scaling (integer)");
   HELP("-s, --scale scale \t\tScale ratio (float)");
+  HELP("--overlay-offset-bottom n\tDistance from bottom edge (moves up)");
+  HELP("--overlay-offset-right n\tDistance from right edge (moves left)");
   END();
 
   SECTION("Other", "");
